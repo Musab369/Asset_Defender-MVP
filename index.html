@@ -963,27 +963,7 @@
                 </a>
             </nav>
 
-            <div style="margin-top: auto;" class="settings-container">
-                <div class="settings-menu" id="settings-menu">
-                    <div class="settings-item">
-                        <i data-lucide="user" size="16"></i>
-                        <span>Profile Settings</span>
-                    </div>
-                    <div class="settings-item" id="btn-switch-account">
-                        <i data-lucide="users" size="16"></i>
-                        <span>Switch Accounts</span>
-                    </div>
-                    <div style="height: 1px; background: var(--border); margin: 0.5rem 0;"></div>
-                    <div class="settings-item danger" id="btn-logout">
-                        <i data-lucide="log-out" size="16"></i>
-                        <span>Logout</span>
-                    </div>
-                </div>
-                <a class="nav-item" id="btn-settings-toggle">
-                    <i data-lucide="settings"></i>
-                    <span>Settings</span>
-                </a>
-            </div>
+            <!-- Settings UI Removed -->
         </aside>
 
         <!-- Main Content -->
@@ -1370,32 +1350,7 @@
             }
         });
 
-        // --- Settings Menu Logic ---
-        const settingsToggle = document.getElementById('btn-settings-toggle');
-        const settingsMenu = document.getElementById('settings-menu');
-        const logoutBtn = document.getElementById('btn-logout');
-        const switchBtn = document.getElementById('btn-switch-account');
-
-        settingsToggle.addEventListener('click', (e) => {
-            e.stopPropagation();
-            settingsMenu.classList.toggle('active');
-        });
-
-        document.addEventListener('click', () => {
-            settingsMenu.classList.remove('active');
-        });
-
-        logoutBtn.addEventListener('click', () => {
-            isAuth = false;
-            currentUser = null; // Clear the active user on logout
-            authOverlay.style.display = 'flex';
-            settingsMenu.classList.remove('active');
-        });
-
-        switchBtn.addEventListener('click', () => {
-            alert("Switching accounts... Redirecting to selector.");
-            logoutBtn.click();
-        });
+        // --- Settings Logic Removed ---
 
         // --- Dashboard Core Logic ---
         const fileInput = document.getElementById('file-input');
