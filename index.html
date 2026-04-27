@@ -738,6 +738,94 @@
                 grid-template-columns: 1fr;
             }
         }
+        /* --- Responsive Design --- */
+        @media (max-width: 1024px) {
+            .dashboard-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .app-container {
+                display: flex;
+                flex-direction: column;
+            }
+            
+            aside {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                height: 70px;
+                flex-direction: row;
+                padding: 0 1rem;
+                z-index: 1000;
+                border-right: none;
+                border-top: 1px solid var(--border);
+                justify-content: space-between;
+                align-items: center;
+                background: var(--bg-card);
+                backdrop-filter: blur(10px);
+            }
+            
+            aside .brand, .settings-container { 
+                display: none; 
+            }
+            
+            aside nav {
+                flex-direction: row;
+                justify-content: space-around;
+                width: 100%;
+                gap: 0;
+            }
+            
+            aside nav .nav-item {
+                flex-direction: column;
+                gap: 4px;
+                padding: 0.5rem;
+                border-radius: 8px;
+            }
+            
+            aside nav .nav-item span {
+                font-size: 0.65rem;
+                display: block;
+            }
+            
+            main {
+                padding: 1.5rem 1rem 100px 1rem; /* Extra bottom padding for fixed nav */
+            }
+            
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .library-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .matches-table {
+                display: block;
+                width: 100%;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+            
+            .auth-card {
+                padding: 2rem 1.5rem;
+                width: calc(100% - 2rem);
+                margin: 1rem;
+            }
+            
+            .upload-section {
+                padding: 2rem 1rem;
+            }
+        }
     </style>
 </head>
 
@@ -1234,6 +1322,12 @@
             authSubmit.disabled = true;
             authSubmit.innerHTML = `<i data-lucide="loader" class="spin" style="width:18px; height:18px; margin-right: 8px;"></i> ${authMode === 'login' ? "Verifying..." : "Creating..."}`;
             lucide.createIcons();
+            
+            // Render free tier wake up indicator
+            const slowLoadTimer = setTimeout(() => {
+                authSubmit.innerHTML = `<i data-lucide="loader" class="spin" style="width:18px; height:18px; margin-right: 8px;"></i> Waking up server (may take ~30s)...`;
+                lucide.createIcons();
+            }, 3000);
 
             try {
                 const endpoint = authMode === 'login' ? '/auth/login' : '/auth/signup';
@@ -1244,6 +1338,7 @@
                 });
 
                 const result = await response.json();
+                clearTimeout(slowLoadTimer);
 
                 if (result.success) {
                     loginSuccess();
@@ -1251,6 +1346,7 @@
                     throw new Error(result.error);
                 }
             } catch (err) {
+                clearTimeout(slowLoadTimer);
                 authError.innerText = err.message;
                 authError.style.display = 'block';
             } finally {
