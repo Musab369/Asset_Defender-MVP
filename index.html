@@ -1423,10 +1423,32 @@
             refreshDashboard(); // Update table when mode changes
         }
 
+        // Drag and Drop Support
+        const uploadZone = document.getElementById('upload-zone');
+        uploadZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadZone.style.borderColor = 'var(--primary)';
+        });
+        uploadZone.addEventListener('dragleave', (e) => {
+            e.preventDefault();
+            uploadZone.style.borderColor = currentMode === 'protect' ? 'var(--border)' : 'var(--accent)';
+        });
+        uploadZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadZone.style.borderColor = currentMode === 'protect' ? 'var(--border)' : 'var(--accent)';
+            if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+                fileInput.files = e.dataTransfer.files;
+                fileInput.dispatchEvent(new Event('change'));
+            }
+        });
+
         // Handle File Selection
         fileInput.addEventListener('change', async (e) => {
             const file = e.target.files[0];
             if (!file) return;
+            
+            // Reset input value so the same file can be selected again
+            e.target.value = '';
 
             // Show Analysis UI
             const reader = new FileReader();
