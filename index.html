@@ -1,0 +1,1669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AssetDefender | AI-Powered Digital Asset Protection</title>
+    <meta name="description" content="Intelligent digital asset protection for sports media. Fingerprint, monitor, and defend your intellectual property with AI.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://accounts.google.com/gsi/client?onload=initGoogleAuth" async defer></script>
+    
+    <style>
+        :root {
+            --bg-dark: #0A0A0C;
+            --bg-card: rgba(30, 30, 40, 0.8);
+            --primary: #00D4FF;
+            --primary-glow: rgba(0, 212, 255, 0.4);
+            --secondary: #9D50BB;
+            --accent: #FF3D71;
+            --text-main: #FFFFFF;
+            --text-muted: #94A3B8;
+            --border: rgba(255, 255, 255, 0.1);
+            --glass: rgba(255, 255, 255, 0.03);
+            --success: #00E676;
+            --warning: #FFAB00;
+            --overlay-bg: rgba(10, 10, 12, 0.9);
+            --bg-image: url('dark.jpeg');
+        }
+
+        body.light-theme {
+            --bg-dark: #F8FAFC;
+            --bg-card: rgba(248, 250, 252, 0.9);
+            --primary: #0088CC;
+            --primary-glow: rgba(0, 136, 204, 0.2);
+            --secondary: #7B1FA2;
+            --accent: #E91E63;
+            --text-main: #0F172A;
+            --text-muted: #64748B;
+            --border: rgba(0, 0, 0, 0.1);
+            --glass: rgba(0, 0, 0, 0.03);
+            --success: #10B981;
+            --warning: #F59E0B;
+            --overlay-bg: rgba(248, 250, 252, 0.9);
+            --bg-image: url('light.jpeg');
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            background-image: var(--bg-image);
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: var(--text-main);
+            overflow: hidden;
+            min-height: 100vh;
+        }
+
+        h1, h2, h3, .brand {
+            font-family: 'Outfit', sans-serif;
+        }
+
+        /* --- Layout --- */
+        .app-container {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            min-height: 100vh;
+        }
+
+        /* --- Sidebar --- */
+        aside {
+            background: var(--bg-card);
+            border-right: 1px solid var(--border);
+            padding: 2rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 2.5rem;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            color: var(--primary);
+        }
+
+        .brand span {
+            color: var(--text-main);
+        }
+
+        nav {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.875rem 1rem;
+            border-radius: 12px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+        }
+
+        .nav-item:hover {
+            background: var(--glass);
+            color: var(--text-main);
+        }
+
+        .nav-item.active {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(157, 80, 187, 0.1));
+            color: var(--primary);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+        }
+
+        /* --- Main Content --- */
+        main {
+            padding: 2.5rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3rem;
+        }
+
+        .header-left h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .header-left p {
+            color: var(--text-muted);
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.5rem 1rem;
+            background: var(--glass);
+            border-radius: 50px;
+            border: 1px solid var(--border);
+        }
+
+        .avatar {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+        }
+
+        /* --- Dashboard Grid --- */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            padding: 1.5rem;
+            border-radius: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100px;
+            height: 100px;
+            background: radial-gradient(circle, var(--primary-glow) 0%, transparent 70%);
+            opacity: 0.1;
+        }
+
+        .stat-label {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .stat-value {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        /* --- Upload Section --- */
+        .upload-section {
+            background: rgba(0, 212, 255, 0.05);
+            border: 2px dashed var(--border);
+            border-radius: 24px;
+            padding: 4rem 2rem;
+            text-align: center;
+            margin-bottom: 2.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .upload-section:hover {
+            border-color: var(--primary);
+            background: rgba(0, 212, 255, 0.02);
+        }
+
+        .upload-icon {
+            width: 64px;
+            height: 64px;
+            background: var(--glass);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            color: var(--primary);
+        }
+
+        .upload-section h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .upload-section p {
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 0.875rem 2rem;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 10px 20px -10px var(--primary-glow);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px -10px var(--primary-glow);
+        }
+
+        /* --- Results Section --- */
+        .section-title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+        }
+
+        .matches-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 0.75rem;
+        }
+
+        .matches-table th {
+            text-align: left;
+            padding: 0 1.5rem;
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .match-row {
+            background: var(--bg-card);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .match-row.removing {
+            opacity: 0;
+            transform: scale(0.95) translateX(50px);
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .spin {
+            animation: spin 1s linear infinite;
+        }
+
+        .match-row td {
+            padding: 1.25rem 1.5rem;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .match-row td:first-child {
+            border-left: 1px solid var(--border);
+            border-radius: 16px 0 0 16px;
+        }
+
+        .match-row td:last-child {
+            border-right: 1px solid var(--border);
+            border-radius: 0 16px 16px 0;
+        }
+
+        .asset-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .asset-preview {
+            width: 48px;
+            height: 48px;
+            border-radius: 8px;
+            background: var(--glass);
+            object-fit: cover;
+        }
+
+        .similarity-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .similarity-high { background: rgba(255, 61, 113, 0.1); color: var(--accent); border: 1px solid rgba(255, 61, 113, 0.2); }
+        .similarity-mid { background: rgba(255, 171, 0, 0.1); color: var(--warning); border: 1px solid rgba(255, 171, 0, 0.2); }
+
+        .status-pulse {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--success);
+            display: inline-block;
+            margin-right: 0.5rem;
+            box-shadow: 0 0 0 0 rgba(0, 230, 118, 0.7);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 230, 118, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(0, 230, 118, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 230, 118, 0); }
+        }
+
+        /* --- Analysis Overlay --- */
+        #analysis-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--overlay-bg);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .scanner-container {
+            text-align: center;
+            max-width: 500px;
+        }
+
+        .scanner-rect {
+            width: 300px;
+            height: 300px;
+            border: 2px solid var(--primary);
+            margin: 0 auto 2rem;
+            position: relative;
+            overflow: hidden;
+            border-radius: 20px;
+            background: var(--glass);
+        }
+
+        .scanner-line {
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(to right, transparent, var(--primary), transparent);
+            position: absolute;
+            top: 0;
+            box-shadow: 0 0 20px var(--primary);
+            animation: scan 2s linear infinite;
+        }
+
+        @keyframes scan {
+            0% { top: 0; }
+            100% { top: 100%; }
+        }
+
+        .log-stream {
+            font-family: 'Courier New', Courier, monospace;
+            color: var(--primary);
+            font-size: 0.875rem;
+            text-align: left;
+            background: var(--bg-card);
+            padding: 1rem;
+            border-radius: 10px;
+            height: 150px;
+            overflow-y: auto;
+            border: 1px solid var(--border);
+        }
+
+        /* Hidden input */
+        #file-input { display: none; }
+
+        /* --- Auth Overlay --- */
+        #auth-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--overlay-bg);
+            z-index: 2000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-image: radial-gradient(circle at 50% 50%, rgba(0, 212, 255, 0.05) 0%, transparent 50%);
+        }
+
+        .auth-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            padding: 3rem;
+            border-radius: 32px;
+            width: 100%;
+            max-width: 450px;
+            text-align: center;
+            box-shadow: 0 40px 80px -20px rgba(0,0,0,0.5);
+        }
+
+        .auth-card .brand {
+            justify-content: center;
+            font-size: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .input-group {
+            text-align: left;
+            margin-bottom: 1.5rem;
+        }
+
+        .input-group label {
+            display: block;
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .input-group input {
+            width: 100%;
+            background: var(--glass);
+            border: 1px solid var(--border);
+            padding: 1rem;
+            border-radius: 12px;
+            color: var(--text-main);
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .input-group input:focus {
+            border-color: var(--primary);
+        }
+
+        .auth-toggle {
+            margin-top: 1.5rem;
+            color: var(--text-muted);
+            font-size: 0.875rem;
+        }
+
+        .auth-toggle span {
+            color: var(--primary);
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        /* --- Settings Dropdown --- */
+        .settings-container {
+            position: relative;
+        }
+
+        .settings-menu {
+            position: absolute;
+            bottom: 100%;
+            left: 0;
+            width: 240px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 0.5rem;
+            display: none;
+            flex-direction: column;
+            gap: 0.25rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            z-index: 100;
+        }
+
+        .settings-menu.active {
+            display: flex;
+        }
+
+        .settings-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            border-radius: 10px;
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .settings-item:hover {
+            background: var(--glass);
+            color: var(--text-main);
+        }
+
+        .settings-item.danger {
+            color: var(--accent);
+        }
+
+        .settings-item.danger:hover {
+            background: rgba(255, 61, 113, 0.1);
+        }
+
+        /* --- Modal Overlay --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--overlay-bg);
+            backdrop-filter: blur(5px);
+            z-index: 1500;
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        }
+
+        .modal-header {
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .modal-close:hover {
+            color: var(--text-main);
+        }
+
+        .modal-body {
+            padding: 1.5rem 2rem;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .fingerprint-item {
+            background: var(--glass);
+            border: 1px solid var(--border);
+            padding: 1rem;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .fingerprint-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .fingerprint-hash {
+            font-family: 'Courier New', Courier, monospace;
+            color: var(--primary);
+            font-size: 0.875rem;
+            word-break: break-all;
+            margin-top: 0.25rem;
+        }
+
+        .library-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .library-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+        }
+
+        .library-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+            border-color: var(--primary);
+        }
+
+        .library-image {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-bottom: 1px solid var(--border);
+            background: var(--bg-dark);
+        }
+
+        .library-info {
+            padding: 1rem;
+        }
+
+        .library-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-bottom: 0.25rem;
+        }
+
+        .library-hash {
+            font-size: 0.75rem;
+            color: var(--primary);
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        @media (max-width: 1024px) {
+            .app-container { grid-template-columns: 80px 1fr; }
+            .nav-item span, .brand span { display: none; }
+            .dashboard-grid { grid-template-columns: 1fr; }
+        }
+
+    </style>
+</head>
+<body class="light-theme">
+
+    <!-- Auth Overlay -->
+    <div id="auth-overlay">
+        <div class="auth-card">
+            <div class="brand">
+                <i data-lucide="shield-check"></i>
+                <span>AssetDefender</span>
+            </div>
+            <h2 id="auth-title" style="margin-bottom: 0.5rem;">Welcome Back</h2>
+            <p id="auth-subtitle" style="color: var(--text-muted); margin-bottom: 2.5rem;">Enter your credentials to access the vault</p>
+            
+            <!-- SAVED ACCOUNT UI -->
+            <div id="saved-account-section" style="display: none; margin-bottom: 1.5rem; padding: 2rem 1.5rem; background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.15);">
+                <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.25rem; font-weight: 500; text-transform: uppercase; letter-spacing: 1px;">Saved Session</div>
+                
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
+                    <div style="width: 56px; height: 56px; border-radius: 50%; background: var(--primary-glow); display: flex; align-items: center; justify-content: center; margin-bottom: 0.5rem; border: 2px solid var(--primary);">
+                        <i data-lucide="user-check" size="28" style="color: var(--primary);"></i>
+                    </div>
+                    
+                    <div style="font-weight: 600; font-size: 1.05rem; color: var(--text-main); margin-bottom: 0.5rem;">
+                        <span id="saved-email-display">user@example.com</span>
+                    </div>
+
+                    <button class="btn-primary" id="btn-continue-saved" style="width: 100%; padding: 0.85rem 1.5rem; font-size: 0.95rem; border-radius: 12px; display: flex; align-items: center; justify-content: center; gap: 0.5rem; margin-top: 0.75rem; box-shadow: 0 4px 15px var(--primary-glow);">
+                        <span>Continue</span>
+                        <i data-lucide="arrow-right" size="18"></i>
+                    </button>
+                </div>
+                
+                <div style="margin-top: 1.5rem;">
+                    <span id="btn-clear-saved" style="font-size: 0.85rem; color: var(--text-muted); cursor: pointer; transition: color 0.2s;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--text-muted)'">Log in with another account</span>
+                </div>
+            </div>
+
+            <div id="auth-form-fields">
+                <div class="input-group">
+                    <label>Email Address</label>
+                    <input type="email" id="auth-email" placeholder="name@organization.com">
+                </div>
+                
+                <div class="input-group">
+                    <label>Password</label>
+                    <input type="password" id="auth-pass" placeholder="••••••••">
+                </div>
+
+                <div id="auth-error" style="color: var(--accent); font-size: 0.85rem; margin-bottom: 1rem; background: rgba(255, 61, 113, 0.1); padding: 0.75rem; border-radius: 8px; border: 1px solid rgba(255, 61, 113, 0.2); display: none;"></div>
+
+                <button class="btn-primary" id="auth-submit" style="width: 100%; margin-top: 0.5rem;">Login to Dashboard</button>
+                
+                <div style="margin: 1.5rem 0; display: flex; align-items: center; gap: 1rem; color: var(--text-muted); font-size: 0.8rem;">
+                    <div style="flex: 1; height: 1px; background: var(--border);"></div>
+                    OR
+                    <div style="flex: 1; height: 1px; background: var(--border);"></div>
+                </div>
+
+                <!-- Google Login Button -->
+                <div id="google-login-btn" style="display: flex; justify-content: center;"></div>
+            </div>
+            
+            <p class="auth-toggle" id="auth-toggle-text">
+                Don't have an account? <span id="toggle-auth">Create one</span>
+            </p>
+        </div>
+    </div>
+
+    <!-- Fingerprints Modal -->
+    <div id="fingerprints-modal" class="modal-overlay">
+        <div class="modal-card">
+            <div class="modal-header">
+                <div class="modal-title">Registered Fingerprints Vault</div>
+                <button class="modal-close" id="btn-close-modal">
+                    <i data-lucide="x" size="24"></i>
+                </button>
+            </div>
+            <div class="modal-body" id="fingerprints-list">
+                <!-- Fingerprints will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <div class="app-container">
+
+        <!-- Sidebar -->
+        <aside>
+            <div class="brand">
+                <i data-lucide="shield-check"></i>
+                <span>AssetDefender</span>
+            </div>
+
+            <nav>
+                <a class="nav-item active" id="nav-overview">
+                    <i data-lucide="layout-dashboard"></i>
+                    <span>Overview</span>
+                </a>
+                <a class="nav-item" id="nav-library">
+                    <i data-lucide="image"></i>
+                    <span>My Library</span>
+                </a>
+                <a class="nav-item" id="nav-alerts">
+                    <i data-lucide="bell"></i>
+                    <span>Misuse Alerts</span>
+                </a>
+            </nav>
+
+            <div style="margin-top: auto;" class="settings-container">
+                <div class="settings-menu" id="settings-menu">
+                    <div class="settings-item">
+                        <i data-lucide="user" size="16"></i>
+                        <span>Profile Settings</span>
+                    </div>
+                    <div class="settings-item" id="btn-switch-account">
+                        <i data-lucide="users" size="16"></i>
+                        <span>Switch Accounts</span>
+                    </div>
+                    <div style="height: 1px; background: var(--border); margin: 0.5rem 0;"></div>
+                    <div class="settings-item danger" id="btn-logout">
+                        <i data-lucide="log-out" size="16"></i>
+                        <span>Logout</span>
+                    </div>
+                </div>
+                <a class="nav-item" id="btn-settings-toggle">
+                    <i data-lucide="settings"></i>
+                    <span>Settings</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main>
+            <header>
+                <div class="header-left">
+                    <h1>Command Center</h1>
+                    <p>Monitoring 12,482 digital assets across the web</p>
+                </div>
+
+                <div class="theme-switcher" id="theme-toggle" style="display: flex; align-items: center; gap: 0.75rem; background: var(--glass); padding: 0.5rem 1.25rem; border-radius: 50px; border: 1px solid var(--border); cursor: pointer; transition: all 0.3s ease;">
+                    <div id="theme-icon-container" style="display: flex; align-items: center; justify-content: center; color: var(--primary);">
+                        <i data-lucide="sun" id="theme-icon" size="18"></i>
+                    </div>
+                    <span id="theme-text" style="font-size: 0.875rem; font-weight: 600; color: var(--text-main);">Light Mode</span>
+                </div>
+            </header>
+
+            <!-- Dashboard View -->
+            <div id="view-dashboard">
+                <!-- Stats -->
+                <div class="dashboard-grid">
+                <div class="stat-card" id="btn-view-fingerprints" style="cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 10px 20px -10px var(--primary-glow)';" onmouseout="this.style.transform='none'; this.style.boxShadow='none';">
+                    <div class="stat-label">
+                        <i data-lucide="fingerprint" size="16"></i> Total Fingerprints (Click to View)
+                    </div>
+                    <div id="stat-fingerprints" class="stat-value">0</div>
+                </div>
+                <div class="stat-card">
+
+                    <div class="stat-label">
+                        <i data-lucide="alert-triangle" size="16" style="color: var(--accent);"></i> Active Violations
+                    </div>
+                    <div id="stat-violations" class="stat-value">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">
+                        <div class="status-pulse"></div> Network Status
+                    </div>
+                    <div class="stat-value">Operational</div>
+                </div>
+            </div>
+
+            <!-- Mode Switcher -->
+            <div style="background: var(--glass); padding: 0.5rem; border-radius: 12px; display: inline-flex; gap: 0.5rem; margin-bottom: 2rem; border: 1px solid var(--border);">
+                <button id="mode-protect" class="btn-mode active" style="background: var(--primary); color: white; border: none; padding: 0.5rem 1.5rem; border-radius: 8px; font-weight: 600; cursor: pointer;">Protect Mode</button>
+                <button id="mode-scan" class="btn-mode" style="background: transparent; color: var(--text-muted); border: none; padding: 0.5rem 1.5rem; border-radius: 8px; font-weight: 600; cursor: pointer;">Scan & Detect</button>
+            </div>
+
+            <!-- Upload Zone -->
+            <div class="section-title">
+                <h3>Asset Registration</h3>
+            </div>
+            
+            <div id="upload-zone" class="upload-section" onclick="document.getElementById('file-input').click()">
+                <div class="upload-icon">
+                    <i id="upload-icon-inner" data-lucide="upload-cloud" size="32"></i>
+                </div>
+                <h3 id="upload-title">Protect New Media</h3>
+                <p id="upload-desc">Drag and drop images or videos to generate neural fingerprints and start monitoring.</p>
+                <button class="btn-primary" id="upload-btn">Select Files</button>
+                <input type="file" id="file-input" accept="image/*,video/*">
+            </div>
+
+            <!-- Results -->
+            <div class="section-title">
+                <h3 id="results-title">Recent Detections</h3>
+                <span style="color: var(--primary); font-size: 0.875rem; cursor: pointer; font-weight: 500;">View All</span>
+            </div>
+
+            <table class="matches-table">
+                <thead id="results-head">
+                    <tr>
+                        <th>Asset Name</th>
+                        <th>Platform</th>
+                        <th>Similarity</th>
+                        <th>Status / Date</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="matches-body">
+                    <tr class="match-row">
+                        <td>
+                            <div class="asset-info">
+                                <img src="https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?auto=format&fit=crop&q=80&w=100" alt="" class="asset-preview">
+                                <div>
+                                    <div style="font-weight: 600;">Final_Trophy_Lift.mp4</div>
+                                    <div style="font-size: 0.75rem; color: var(--text-muted);">Original Hash: f7a2...b91c</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>Twitter / X</td>
+                        <td><span class="similarity-badge similarity-high">98.4% Match</span></td>
+                        <td>2m ago</td>
+                        <td><button style="background: transparent; border: 1px solid var(--border); color: var(--text-main); padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer;" onclick="handleTakedown(this)">Takedown</button></td>
+                    </tr>
+                    <tr class="match-row">
+                        <td>
+                            <div class="asset-info">
+                                <img src="https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&q=80&w=100" alt="" class="asset-preview">
+                                <div>
+                                    <div style="font-weight: 600;">UCL_Match_Highlights_01.jpg</div>
+                                    <div style="font-size: 0.75rem; color: var(--text-muted);">Original Hash: a8b2...c4e5</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>Instagram</td>
+                        <td><span class="similarity-badge similarity-mid">82.1% (Cropped)</span></td>
+                        <td>14m ago</td>
+                        <td><button style="background: transparent; border: 1px solid var(--border); color: var(--text-main); padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer;">Review</button></td>
+                    </tr>
+                </tbody>
+            </table>
+            </div> <!-- End Dashboard View -->
+
+            <!-- Library View -->
+            <div id="view-library" style="display: none;">
+                <div class="section-title">
+                    <h3>Protected Assets Library</h3>
+                    <p style="color: var(--text-muted); font-size: 0.875rem;">Your securely vaulted media.</p>
+                </div>
+                <div class="library-grid" id="library-grid">
+                    <!-- Library cards will be loaded here -->
+                </div>
+            </div> <!-- End Library View -->
+
+            <!-- Alerts View -->
+            <div id="view-alerts" style="display: none;">
+                <div class="section-title">
+                    <h3>Misuse Alerts & Notifications</h3>
+                    <p style="color: var(--text-muted); font-size: 0.875rem;">Manage active violations and notify stakeholders.</p>
+                </div>
+                <div id="alerts-list" style="display: flex; flex-direction: column; gap: 1rem;">
+                    <!-- Alerts will be loaded here -->
+                </div>
+            </div> <!-- End Alerts View -->
+
+        </main>
+    </div>
+
+    <!-- Analysis Overlay UI -->
+    <div id="analysis-overlay">
+        <div class="scanner-container">
+            <div class="scanner-rect">
+                <div class="scanner-line"></div>
+                <img id="analyzing-img" style="width: 100%; height: 100%; object-fit: contain; opacity: 0.5;">
+            </div>
+            <h2 id="status-text" style="margin-bottom: 1rem;">Generating Neural Fingerprint...</h2>
+            <div class="log-stream" id="log-stream">
+                <!-- Logs will appear here dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // State
+        let currentMode = 'protect'; // 'protect' or 'scan'
+        let isAuth = false;
+        let authMode = 'login';
+        let currentUser = null; // Tracks the logged-in user's email
+        const API_BASE = '/api';
+        const alertAudio = new Audio('audio.mpeg');
+        const welcomeAudio = new Audio('welcome.mpeg');
+        const confirmAudio = new Audio('confirm.mpeg');
+
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // --- Auth Logic ---
+        const authOverlay = document.getElementById('auth-overlay');
+        const toggleAuth = document.getElementById('toggle-auth');
+        const authTitle = document.getElementById('auth-title');
+        const authSubmit = document.getElementById('auth-submit');
+        const toggleText = document.getElementById('auth-toggle-text');
+        const authError = document.getElementById('auth-error');
+        const authEmailInput = document.getElementById('auth-email');
+        const authPassInput = document.getElementById('auth-pass');
+
+        const savedAccountSection = document.getElementById('saved-account-section');
+        const authFormFields = document.getElementById('auth-form-fields');
+        const savedEmailDisplay = document.getElementById('saved-email-display');
+        const btnContinueSaved = document.getElementById('btn-continue-saved');
+        const btnClearSaved = document.getElementById('btn-clear-saved');
+
+        function checkSavedSession() {
+            const saved = localStorage.getItem('ad_saved_user');
+            if (saved && authMode === 'login') {
+                try {
+                    const parsed = JSON.parse(saved);
+                    if (parsed.email && parsed.password) {
+                        savedEmailDisplay.innerText = parsed.email;
+                        savedAccountSection.style.display = 'block';
+                        authFormFields.style.display = 'none';
+                    }
+                } catch(e) {}
+            } else {
+                savedAccountSection.style.display = 'none';
+                authFormFields.style.display = 'block';
+            }
+        }
+
+        btnContinueSaved.addEventListener('click', () => {
+            const saved = localStorage.getItem('ad_saved_user');
+            if (saved) {
+                try {
+                    const parsed = JSON.parse(saved);
+                    authEmailInput.value = parsed.email;
+                    authPassInput.value = parsed.password;
+                    authSubmit.click();
+                } catch(e) {}
+            }
+        });
+
+        btnClearSaved.addEventListener('click', () => {
+            localStorage.removeItem('ad_saved_user');
+            checkSavedSession();
+            authEmailInput.value = '';
+            authPassInput.value = '';
+        });
+
+        // Initialize check
+        checkSavedSession();
+
+        // --- Google Auth Initialization ---
+        window.initGoogleAuth = function () {
+            if (typeof google !== 'undefined') {
+                google.accounts.id.initialize({
+                    client_id: "20826960770-stlsmari0slk2crg5vvro06egdu6kv6h.apps.googleusercontent.com", 
+                    callback: handleCredentialResponse
+                });
+                google.accounts.id.renderButton(
+                    document.getElementById("google-login-btn"),
+                    { theme: "outline", size: "large", width: 450, shape: "pill" }
+                );
+            } else {
+                console.error("Google API script failed to load or initialized late.");
+            }
+        }
+
+        async function handleCredentialResponse(response) {
+            console.log("Verifying Google account...");
+            
+            try {
+                const res = await fetch(API_BASE + '/auth/google', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ credential: response.credential })
+                });
+
+                const result = await res.json();
+
+                if (result.success) {
+                    authEmailInput.value = result.user.email;
+                    // Update UI with user info if available
+                    if (result.user.picture) {
+                        document.querySelector('.avatar').style.backgroundImage = `url(${result.user.picture})`;
+                        document.querySelector('.avatar').style.backgroundSize = 'cover';
+                    }
+                    loginSuccess();
+                } else {
+                    throw new Error(result.error);
+                }
+            } catch (err) {
+                authError.innerText = "Google Login Failed: " + err.message;
+                authError.style.display = 'block';
+            }
+        }
+
+        function loginSuccess() {
+            isAuth = true;
+            currentUser = authEmailInput.value; // Set the active user
+            if (authEmailInput.value && authPassInput.value) {
+                localStorage.setItem('ad_saved_user', JSON.stringify({
+                    email: authEmailInput.value,
+                    password: authPassInput.value
+                }));
+            }
+            authOverlay.style.display = 'none';
+            document.body.style.overflow = 'auto';
+            welcomeAudio.play().catch(e => console.log("Audio play blocked:", e));
+            console.log(`[AUTH] Logged in as: ${currentUser}`);
+            refreshDashboard();
+        }
+
+        function validateEmail(email) {
+            return String(email)
+                .toLowerCase()
+                .match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
+        }
+
+        // Use a single delegated listener or just re-attach simply
+        function handleToggle() {
+            authMode = authMode === 'login' ? 'signup' : 'login';
+            authError.style.display = 'none';
+            if (authMode === 'signup') {
+                authTitle.innerText = "Create Account";
+                authSubmit.innerText = "Get Started";
+                toggleText.innerHTML = 'Already have an account? <span id="toggle-auth" style="color: var(--primary); cursor: pointer; text-decoration: underline;">Login</span>';
+            } else {
+                authTitle.innerText = "Welcome Back";
+                authSubmit.innerText = "Login to Dashboard";
+                toggleText.innerHTML = 'Don\'t have an account? <span id="toggle-auth" style="color: var(--primary); cursor: pointer; text-decoration: underline;">Create one</span>';
+            }
+            checkSavedSession();
+            document.getElementById('toggle-auth').onclick = handleToggle;
+        }
+        
+        if (toggleAuth) toggleAuth.onclick = handleToggle;
+
+        authSubmit.addEventListener('click', async () => {
+            const email = authEmailInput.value;
+            const password = authPassInput.value;
+
+            authError.style.display = 'none';
+
+            if (!validateEmail(email)) {
+                authError.innerText = "Please enter a valid email address.";
+                authError.style.display = 'block';
+                return;
+            }
+
+            if (password.length < 6) {
+                authError.innerText = "Password must be at least 6 characters long.";
+                authError.style.display = 'block';
+                return;
+            }
+
+            authSubmit.disabled = true;
+            authSubmit.innerHTML = `<i data-lucide="loader" class="spin" style="width:18px; height:18px; margin-right: 8px;"></i> ${authMode === 'login' ? "Verifying..." : "Creating..."}`;
+            lucide.createIcons();
+
+            try {
+                const endpoint = authMode === 'login' ? '/auth/login' : '/auth/signup';
+                const response = await fetch(API_BASE + endpoint, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    loginSuccess();
+                } else {
+                    throw new Error(result.error);
+                }
+            } catch (err) {
+                authError.innerText = err.message;
+                authError.style.display = 'block';
+            } finally {
+                authSubmit.disabled = false;
+                authSubmit.innerText = authMode === 'login' ? "Login to Dashboard" : "Get Started";
+            }
+        });
+
+        // --- Settings Menu Logic ---
+        const settingsToggle = document.getElementById('btn-settings-toggle');
+        const settingsMenu = document.getElementById('settings-menu');
+        const logoutBtn = document.getElementById('btn-logout');
+        const switchBtn = document.getElementById('btn-switch-account');
+
+        settingsToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            settingsMenu.classList.toggle('active');
+        });
+
+        document.addEventListener('click', () => {
+            settingsMenu.classList.remove('active');
+        });
+
+        logoutBtn.addEventListener('click', () => {
+            isAuth = false;
+            currentUser = null; // Clear the active user on logout
+            authOverlay.style.display = 'flex';
+            settingsMenu.classList.remove('active');
+        });
+
+        switchBtn.addEventListener('click', () => {
+            alert("Switching accounts... Redirecting to selector.");
+            logoutBtn.click();
+        });
+
+        // --- Dashboard Core Logic ---
+        const fileInput = document.getElementById('file-input');
+        const overlay = document.getElementById('analysis-overlay');
+        const logStream = document.getElementById('log-stream');
+        const statusText = document.getElementById('status-text');
+        const analyzingImg = document.getElementById('analyzing-img');
+        const matchesBody = document.getElementById('matches-body');
+
+        // Mode Switching Logic
+        document.getElementById('mode-protect').addEventListener('click', () => setMode('protect'));
+        document.getElementById('mode-scan').addEventListener('click', () => setMode('scan'));
+
+        function setMode(mode) {
+            currentMode = mode;
+            const protectBtn = document.getElementById('mode-protect');
+            const scanBtn = document.getElementById('mode-scan');
+            
+            if (mode === 'protect') {
+                protectBtn.style.background = 'var(--primary)';
+                protectBtn.style.color = 'white';
+                scanBtn.style.background = 'transparent';
+                scanBtn.style.color = 'var(--text-muted)';
+                document.getElementById('upload-title').innerText = "Protect New Media";
+                document.getElementById('upload-desc').innerText = "Register original assets to your secure vault.";
+                document.getElementById('upload-zone').style.borderColor = 'var(--border)';
+                document.getElementById('upload-zone').style.background = 'rgba(0, 212, 255, 0.05)';
+                document.getElementById('upload-icon-inner').style.color = 'var(--primary)';
+            } else {
+                scanBtn.style.background = 'var(--accent)';
+                scanBtn.style.color = 'white';
+                protectBtn.style.background = 'transparent';
+                protectBtn.style.color = 'var(--text-muted)';
+                document.getElementById('upload-title').innerText = "Scan for Violations";
+                document.getElementById('upload-desc').innerText = "Upload a suspicious image to check against your protected assets.";
+                document.getElementById('upload-zone').style.borderColor = 'var(--accent)';
+                document.getElementById('upload-zone').style.background = 'rgba(255, 61, 113, 0.05)';
+                document.getElementById('upload-icon-inner').style.color = 'var(--accent)';
+            }
+            refreshDashboard(); // Update table when mode changes
+        }
+
+        // Handle File Selection
+        fileInput.addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            // Show Analysis UI
+            const reader = new FileReader();
+            reader.onload = (ev) => {
+                analyzingImg.src = ev.target.result;
+                overlay.style.display = 'flex';
+                logStream.innerHTML = `[INFO] Starting ${currentMode.toUpperCase()} pipeline for ${file.name}...<br>`;
+                statusText.innerText = "Analyzing Media...";
+            };
+            reader.readAsDataURL(file);
+
+            // Execute Backend Call
+            const formData = new FormData();
+            formData.append('asset', file);
+            formData.append('userEmail', currentUser); // Scope to the logged-in user
+
+            try {
+                const endpoint = currentMode === 'protect' ? '/register' : '/check';
+                addLog(`[NETWORK] Sending data to ${endpoint}...`);
+                
+                const response = await fetch(API_BASE + endpoint, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+                
+                if (result.success) {
+                    await finalizeAnalysis(file.name, result);
+                } else {
+                    throw new Error(result.error || 'Server error');
+                }
+            } catch (err) {
+                addLog(`<span style="color: var(--accent)">[ERROR] ${err.message}</span>`);
+                statusText.innerText = "Error Occurred";
+                setTimeout(() => overlay.style.display = 'none', 3000);
+            }
+        });
+
+        function addLog(msg) {
+            const entry = document.createElement('div');
+            entry.innerHTML = `${msg}`;
+            logStream.appendChild(entry);
+            logStream.scrollTop = logStream.scrollHeight;
+        }
+
+        async function finalizeAnalysis(filename, result) {
+            addLog(`[AI] Fingerprint Generated: <span style="color: var(--text-main)">${result.fingerprint.substring(0, 16)}...</span>`);
+            
+            if (currentMode === 'protect') {
+                addLog(`[SUCCESS] Asset successfully registered in the vault.`);
+                statusText.innerText = "Asset Protected!";
+                confirmAudio.play().catch(e => console.log("Audio play blocked:", e));
+            } else {
+                const matchCount = result.matches.length;
+                addLog(`[SCAN] Comparison complete. ${matchCount} matches found.`);
+                
+                if (matchCount > 0) {
+                    statusText.innerText = "VIOLATION DETECTED!";
+                    addLog(`[ALERT] <span style="color: var(--accent)">Automated email alert sent to security team.</span>`);
+                    alertAudio.play().catch(e => console.log("Audio play blocked:", e));
+                } else {
+                    statusText.innerText = "No Matches Found";
+                    addLog(`[INFO] This asset does not conflict with any protected media.`);
+                    confirmAudio.play().catch(e => console.log("Audio play blocked:", e));
+                }
+            }
+
+            await new Promise(r => setTimeout(r, 2000));
+            overlay.style.display = 'none';
+            refreshDashboard();
+        }
+
+        async function refreshDashboard() {
+            if (!currentUser) return; // No user logged in, skip
+            try {
+                const res = await fetch(`${API_BASE}/dashboard?userEmail=${encodeURIComponent(currentUser)}`);
+                const data = await res.json();
+                
+                // Update stats
+                document.getElementById('stat-fingerprints').innerText = data.assets.length;
+                document.getElementById('stat-violations').innerText = data.detections.length;
+
+                // Update Table
+                matchesBody.innerHTML = '';
+                const resultsTitle = document.getElementById('results-title');
+                
+                if (currentMode === 'scan') {
+                    resultsTitle.innerText = "Recent Detections";
+                    // Show Detections (1 row per file, best match)
+                    data.detections.reverse().forEach(det => {
+                        const m = det.matches.sort((a, b) => b.similarity - a.similarity)[0];
+                        if (!m) return;
+
+                        const row = document.createElement('tr');
+                        row.className = 'match-row';
+                        row.innerHTML = `
+                            <td>
+                                <div class="asset-info">
+                                    <div class="asset-preview" style="display:flex; align-items:center; justify-content:center; background: var(--accent); color: white;">
+                                        <i data-lucide="alert-circle" size="20"></i>
+                                    </div>
+                                    <div>
+                                        <div style="font-weight: 600;">Suspicious: ${det.filename}</div>
+                                        <div style="font-size: 0.75rem; color: var(--text-muted);">Matched: ${m.originalName} ${det.matches.length > 1 ? `(+${det.matches.length - 1} more)` : ''}</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>Web / Unknown</td>
+                            <td><span class="similarity-badge similarity-high">${m.similarity}% Match</span></td>
+                            <td>${new Date(det.timestamp).toLocaleTimeString()}</td>
+                            <td><button class="btn-primary" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;" onclick="handleTakedown(this, '${det.id}')">Takedown</button></td>
+                        `;
+                        matchesBody.appendChild(row);
+                    });
+
+                    if (data.detections.length === 0) {
+                        matchesBody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: var(--text-muted); padding: 3rem;">No active violations detected. All your assets are secure!</td></tr>';
+                    }
+                } else {
+                    resultsTitle.innerText = "Recently Protected Assets";
+                    // Show Protected Assets in the table
+                    data.assets.reverse().forEach(asset => {
+                        const row = document.createElement('tr');
+                        row.className = 'match-row';
+                        row.innerHTML = `
+                            <td>
+                                <div class="asset-info">
+                                    <div class="asset-preview" style="display:flex; align-items:center; justify-content:center; background: var(--primary); color: black;">
+                                        <i data-lucide="check-circle" size="20"></i>
+                                    </div>
+                                    <div>
+                                        <div style="font-weight: 600;">${asset.name}</div>
+                                        <div style="font-size: 0.75rem; color: var(--text-muted);">Hash: ${asset.fingerprint.substring(0, 8)}...</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>Original Vault</td>
+                            <td><span class="similarity-badge" style="background: rgba(0,212,255,0.1); color: var(--primary);">Protected</span></td>
+                            <td>${new Date(asset.timestamp).toLocaleString()}</td>
+                            <td><button style="background: transparent; border: 1px solid var(--border); color: var(--text-main); padding: 0.4rem 0.8rem; border-radius: 8px; cursor: pointer; font-size: 0.8rem;">Manage</button></td>
+                        `;
+                        matchesBody.appendChild(row);
+                    });
+
+                    if (data.assets.length === 0) {
+                        matchesBody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: var(--text-muted); padding: 3rem;">No assets protected yet. Start by uploading above!</td></tr>';
+                    }
+                }
+                
+                lucide.createIcons();
+            } catch (e) {
+                console.error("Dashboard refresh failed", e);
+            }
+        }
+
+        window.handleTakedown = async function(btn, detectionId) {
+            const row = btn.closest('tr');
+            btn.innerHTML = '<i data-lucide="loader" class="spin" style="width:16px;height:16px;"></i> Removing...';
+            lucide.createIcons();
+            btn.disabled = true;
+            
+            try {
+                // Actually remove it from the backend
+                if (currentUser && detectionId) {
+                    await fetch(API_BASE + '/takedown', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ userEmail: currentUser, detectionId })
+                    });
+                }
+
+                row.classList.add('removing');
+                setTimeout(() => {
+                    row.remove();
+                    // visually update count
+                    const statViolations = document.getElementById('stat-violations');
+                    if (statViolations && parseInt(statViolations.innerText) > 0) {
+                        statViolations.innerText = parseInt(statViolations.innerText) - 1;
+                    }
+                    if (document.querySelectorAll('#matches-body .match-row').length === 0) {
+                        document.getElementById('matches-body').innerHTML = '<tr><td colspan="5" style="text-align: center; color: var(--text-muted); padding: 2rem;">No active violations. All clear!</td></tr>';
+                    }
+                }, 400); // Wait for CSS transition
+            } catch (error) {
+                console.error("Takedown failed:", error);
+                btn.innerHTML = 'Failed';
+            }
+        };
+
+        // Initial Load
+        refreshDashboard();
+
+        // --- Fingerprints Modal Logic ---
+        const btnViewFingerprints = document.getElementById('btn-view-fingerprints');
+        const fingerprintsModal = document.getElementById('fingerprints-modal');
+        const btnCloseModal = document.getElementById('btn-close-modal');
+        const fingerprintsList = document.getElementById('fingerprints-list');
+
+        btnViewFingerprints.addEventListener('click', async () => {
+            fingerprintsModal.style.display = 'flex';
+            fingerprintsList.innerHTML = '<div style="text-align: center; color: var(--text-muted); padding: 2rem;">Loading fingerprints...</div>';
+            
+            try {
+                const res = await fetch(`${API_BASE}/dashboard?userEmail=${encodeURIComponent(currentUser)}`);
+                const data = await res.json();
+                
+                if (data.assets && data.assets.length > 0) {
+                    fingerprintsList.innerHTML = '';
+                    data.assets.reverse().forEach(asset => {
+                        const item = document.createElement('div');
+                        item.className = 'fingerprint-item';
+                        item.innerHTML = `
+                            <div style="flex: 1; min-width: 0;">
+                                <div style="font-weight: 600; font-size: 0.9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${asset.name}</div>
+                                <div class="fingerprint-hash">${asset.fingerprint}</div>
+                                <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem;">Protected on: ${new Date(asset.timestamp).toLocaleString()}</div>
+                            </div>
+                            <div style="margin-left: 1rem; color: var(--success);">
+                                <i data-lucide="shield-check" size="20"></i>
+                            </div>
+                        `;
+                        fingerprintsList.appendChild(item);
+                    });
+                    lucide.createIcons();
+                } else {
+                    fingerprintsList.innerHTML = '<div style="text-align: center; color: var(--text-muted); padding: 2rem;">No fingerprints in the vault yet.</div>';
+                }
+            } catch (err) {
+                fingerprintsList.innerHTML = `<div style="text-align: center; color: var(--accent); padding: 2rem;">Failed to load fingerprints: ${err.message}</div>`;
+            }
+        });
+
+        btnCloseModal.addEventListener('click', () => {
+            fingerprintsModal.style.display = 'none';
+        });
+
+        // Close modal if clicked outside
+        fingerprintsModal.addEventListener('click', (e) => {
+            if (e.target === fingerprintsModal) {
+                fingerprintsModal.style.display = 'none';
+            }
+        });
+
+        // --- Navigation Logic ---
+        const navOverview = document.getElementById('nav-overview');
+        const navLibrary = document.getElementById('nav-library');
+        const navAlerts = document.getElementById('nav-alerts');
+        
+        const viewDashboard = document.getElementById('view-dashboard');
+        const viewLibrary = document.getElementById('view-library');
+        const viewAlerts = document.getElementById('view-alerts');
+        
+        const libraryGrid = document.getElementById('library-grid');
+        const alertsList = document.getElementById('alerts-list');
+
+        function hideAllViews() {
+            viewDashboard.style.display = 'none';
+            viewLibrary.style.display = 'none';
+            viewAlerts.style.display = 'none';
+        }
+
+        navOverview.addEventListener('click', () => {
+            hideAllViews();
+            viewDashboard.style.display = 'block';
+        });
+
+        navLibrary.addEventListener('click', async () => {
+            hideAllViews();
+            viewLibrary.style.display = 'block';
+            libraryGrid.innerHTML = '<div style="color: var(--text-muted); grid-column: 1 / -1; text-align: center; padding: 2rem;">Loading library...</div>';
+            
+            try {
+                const res = await fetch(`${API_BASE}/dashboard?userEmail=${encodeURIComponent(currentUser)}`);
+                const data = await res.json();
+                
+                if (data.assets && data.assets.length > 0) {
+                    libraryGrid.innerHTML = '';
+                    data.assets.reverse().forEach(asset => {
+                        const card = document.createElement('div');
+                        card.className = 'library-card';
+                        // Show the actual image uploaded if available, fallback to placeholder
+                        const imgSrc = asset.filename ? `/uploads/${asset.filename}` : 'https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?auto=format&fit=crop&q=80&w=400';
+                        
+                        card.innerHTML = `
+                            <img src="${imgSrc}" class="library-image" alt="Protected Asset" onerror="this.src='https://via.placeholder.com/400x300?text=No+Preview'">
+                            <div class="library-info">
+                                <div class="library-name" title="${asset.name}">${asset.name}</div>
+                                <div class="library-hash" title="${asset.fingerprint}">${asset.fingerprint.substring(0, 16)}...</div>
+                                <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.5rem; display: flex; justify-content: space-between; align-items: center;">
+                                    <span>${new Date(asset.timestamp).toLocaleString()}</span>
+                                    <i data-lucide="shield-check" size="14" style="color: var(--success);"></i>
+                                </div>
+                            </div>
+                        `;
+                        libraryGrid.appendChild(card);
+                    });
+                    lucide.createIcons();
+                } else {
+                    libraryGrid.innerHTML = '<div style="color: var(--text-muted); grid-column: 1 / -1; text-align: center; padding: 2rem;">Your library is empty. Register assets to see them here.</div>';
+                }
+            } catch (err) {
+                libraryGrid.innerHTML = `<div style="color: var(--accent); grid-column: 1 / -1; text-align: center; padding: 2rem;">Failed to load library: ${err.message}</div>`;
+            }
+        });
+
+        navAlerts.addEventListener('click', async () => {
+            hideAllViews();
+            viewAlerts.style.display = 'block';
+            alertsList.innerHTML = '<div style="color: var(--text-muted); text-align: center; padding: 2rem;">Loading alerts...</div>';
+            
+            try {
+                const res = await fetch(`${API_BASE}/dashboard?userEmail=${encodeURIComponent(currentUser)}`);
+                const data = await res.json();
+                
+                if (data.detections && data.detections.length > 0) {
+                    alertsList.innerHTML = '';
+                    data.detections.reverse().forEach(det => {
+                        det.matches.forEach(m => {
+                            const alertCard = document.createElement('div');
+                            alertCard.style.background = 'var(--bg-card)';
+                            alertCard.style.border = '1px solid var(--accent)';
+                            alertCard.style.borderRadius = '16px';
+                            alertCard.style.padding = '1.5rem';
+                            alertCard.style.display = 'flex';
+                            alertCard.style.justifyContent = 'space-between';
+                            alertCard.style.alignItems = 'center';
+
+                            const userEmail = document.getElementById('auth-email').value || 'admin@organization.com';
+                            const mailSubject = '[URGENT] Copyright Violation Detected: AssetDefender';
+                            const mailBody = `Hello,\n\nAssetDefender has detected a potential copyright violation of your protected digital asset.\n\nDetails:\n- Suspicious File: ${det.filename}\n- Matched Original: ${m.originalName}\n- Similarity: ${m.similarity}%\n- Detected At: ${new Date(det.timestamp).toLocaleString()}\n\nPlease review the dashboard and take necessary action.\n\nSecurely,\nAssetDefender System`;
+
+                            alertCard.innerHTML = `
+                                <div>
+                                    <div style="font-weight: bold; color: var(--accent); display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                                        <i data-lucide="alert-triangle" size="18"></i> Violation Detected!
+                                    </div>
+                                    <div style="font-size: 0.9rem; margin-bottom: 0.25rem;"><strong>Suspicious Media:</strong> ${det.filename}</div>
+                                    <div style="font-size: 0.9rem; margin-bottom: 0.25rem;"><strong>Original Asset:</strong> ${m.originalName}</div>
+                                    <div style="font-size: 0.875rem; color: var(--text-main);">Similarity Score: <span style="color: orangered; font-weight: bold;">${m.similarity}%</span> | Detected: ${new Date(det.timestamp).toLocaleString()}</div>
+                                </div>
+                                <div style="display: flex; flex-direction: column; align-items: flex-end;">
+                                    <button onclick="sendAlertEmail(this, '${userEmail}', \`${mailSubject}\`, \`${mailBody}\`)" class="btn-primary" style="display: inline-flex; align-items: center; gap: 0.5rem; background: var(--primary); color: black; border: none; padding: 0.5rem 1rem; border-radius: 8px; font-weight: 600; cursor: pointer;">
+                                        <i data-lucide="send" size="16"></i> Send Silently
+                                    </button>
+                                    <div class="email-status" style="margin-top: 0.5rem; font-size: 0.8rem; text-align: right;"></div>
+                                </div>
+                            `;
+                            alertsList.appendChild(alertCard);
+                        });
+                    });
+                    lucide.createIcons();
+                } else {
+                    alertsList.innerHTML = '<div style="color: var(--text-muted); text-align: center; padding: 2rem;">No active violations detected. Everything is secure!</div>';
+                }
+            } catch (err) {
+                alertsList.innerHTML = `<div style="color: var(--accent); text-align: center; padding: 2rem;">Failed to load alerts: ${err.message}</div>`;
+            }
+        });
+
+        window.sendAlertEmail = async function(btn, to, subject, body) {
+            const statusDiv = btn.nextElementSibling;
+            btn.disabled = true;
+            btn.innerHTML = '<i data-lucide="loader" size="16" class="spin"></i> Sending...';
+            lucide.createIcons();
+            
+            try {
+                const response = await fetch(API_BASE + '/send-alert', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ to, subject, body })
+                });
+                const result = await response.json();
+                
+                if (result.success) {
+                    btn.innerHTML = '<i data-lucide="check" size="16"></i> Sent';
+                    btn.style.background = 'var(--success)';
+                    statusDiv.innerHTML = `<span style="color: var(--success);">Real email delivered to your inbox!</span>`;
+                } else {
+                    throw new Error(result.error);
+                }
+            } catch (error) {
+                btn.innerHTML = '<i data-lucide="x" size="16"></i> Failed';
+                btn.style.background = 'var(--accent)';
+                statusDiv.innerHTML = `<span style="color: var(--accent);">${error.message}</span>`;
+            }
+            lucide.createIcons();
+        };
+
+        // Add some interaction to nav items
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const active = document.querySelector('.nav-item.active');
+                if (active) active.classList.remove('active');
+                item.classList.add('active');
+            });
+        });
+        // --- Theme Switching Logic ---
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+        const themeText = document.getElementById('theme-text');
+        
+        themeToggle.addEventListener('click', () => {
+            const isLight = document.body.classList.toggle('light-theme');
+            
+            if (isLight) {
+                themeIcon.setAttribute('data-lucide', 'sun');
+                themeText.innerText = 'Light Mode';
+            } else {
+                themeIcon.setAttribute('data-lucide', 'moon');
+                themeText.innerText = 'Dark Mode';
+            }
+            lucide.createIcons();
+        });
+    </script>
+</body>
+</html>

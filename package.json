@@ -1,0 +1,22 @@
+{
+  "name": "my_project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "hamming-distance": "^1.0.0",
+    "imghash": "^1.1.3",
+    "multer": "^2.1.1",
+    "nodemailer": "^8.0.5",
+    "sharp": "^0.34.5"
+  }
+}
