@@ -1911,7 +1911,8 @@
             const authEmail = document.getElementById('auth-email');
             const authPass = document.getElementById('auth-pass');
             if (authEmail && authPass) {
-                authEmail.value = 'demo@assetdefender.com';
+                const sessionId = Math.random().toString(36).substring(2, 8);
+                authEmail.value = `guest_${sessionId}@assetdefender.com`;
                 authPass.value = 'password123';
                 // Override the style so it never shows
                 document.getElementById('auth-overlay').style.setProperty('display', 'none', 'important');
