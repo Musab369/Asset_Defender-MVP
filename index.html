@@ -1470,6 +1470,12 @@
 
             if (currentMode === 'protect') {
                 addLog(`[SUCCESS] Asset successfully registered in the vault.`);
+                if (result.aiAnalysis) {
+                    addLog(`[AI] Description: <span style="color: var(--primary)">${result.aiAnalysis.description}</span>`);
+                    if (result.aiAnalysis.hasWatermark) {
+                        addLog(`[AI] <span style="color: var(--warning)">Warning: Watermark detected (${result.aiAnalysis.watermarkDetail})</span>`);
+                    }
+                }
                 statusText.innerText = "Asset Protected!";
                 confirmAudio.play().catch(e => console.log("Audio play blocked:", e));
             } else {
@@ -1553,6 +1559,7 @@
                                     <div>
                                         <div style="font-weight: 600;">${asset.name}</div>
                                         <div style="font-size: 0.75rem; color: var(--text-muted);">Hash: ${asset.fingerprint.substring(0, 8)}...</div>
+                                        ${asset.aiAnalysis ? `<div style="font-size: 0.75rem; color: var(--primary); margin-top: 4px; line-height: 1.4; opacity: 0.9;">AI: ${asset.aiAnalysis.description}</div>` : ''}
                                     </div>
                                 </div>
                             </td>
@@ -1709,6 +1716,7 @@
                             <div class="library-info">
                                 <div class="library-name" title="${asset.name}">${asset.name}</div>
                                 <div class="library-hash" title="${asset.fingerprint}">${asset.fingerprint.substring(0, 16)}...</div>
+                                ${asset.aiAnalysis ? `<div style="font-size: 0.75rem; color: var(--primary); margin-top: 0.75rem; border-top: 1px solid var(--border); padding-top: 0.75rem; line-height: 1.4;">${asset.aiAnalysis.description}</div>` : ''}
                                 <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.5rem; display: flex; justify-content: space-between; align-items: center;">
                                     <span>${new Date(asset.timestamp).toLocaleString()}</span>
                                     <i data-lucide="shield-check" size="14" style="color: var(--success);"></i>

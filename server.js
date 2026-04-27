@@ -8,6 +8,7 @@ const nodemailer = require('nodemailer');
 const { generateFingerprint, calculateSimilarity } = require('./utils/fingerprint');
 const { addAsset, addDetection, loadData, removeDetection, removeAsset } = require('./utils/storage');
 const { registerUser, authenticateUser } = require('./utils/users');
+const { analyzeImage } = require('./utils/ai');
 
 
 // Helper: Load .env variables manually
@@ -115,11 +116,16 @@ app.post('/api/register', upload.single('asset'), async (req, res) => {
         // 1. Generate the unique fingerprint (AI logic)
         const fingerprint = await generateFingerprint(req.file.path);
         
-        // 2. Store it under this user's profile
+        // 2. Perform AI Analysis (Google Gemini)
+        console.log(`[AI] Analyzing ${req.file.originalname} with Gemini...`);
+        const aiAnalysis = await analyzeImage(req.file.path, req.file.mimetype);
+
+        // 3. Store it under this user's profile
         const asset = {
             name: req.file.originalname,
             filename: req.file.filename,
             fingerprint: fingerprint,
+            aiAnalysis: aiAnalysis, // Save AI results
             type: req.file.mimetype,
             timestamp: new Date().toISOString()
         };
