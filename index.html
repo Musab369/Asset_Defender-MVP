@@ -1904,6 +1904,26 @@
                 imageElement.src = '';
             }
         });
+
+        // --- Safe Auth Bypass (Requested by User) ---
+        // This hides the login UI and forces an auto-login to a demo account
+        // so that all internal dashboard logic continues to work perfectly.
+        window.addEventListener('DOMContentLoaded', () => {
+            const authEmail = document.getElementById('auth-email');
+            const authPass = document.getElementById('auth-pass');
+            if (authEmail && authPass) {
+                authEmail.value = 'demo@assetdefender.com';
+                authPass.value = 'password123';
+                // Override the style so it never shows
+                document.getElementById('auth-overlay').style.setProperty('display', 'none', 'important');
+                document.getElementById('saved-account-section').style.display = 'none';
+                
+                // Trigger the actual login success flow natively
+                setTimeout(() => {
+                    loginSuccess();
+                }, 50);
+            }
+        });
     </script>
 </body>
 
