@@ -1,20 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AssetDefender | AI-Powered Digital Asset Protection</title>
-    <meta name="description" content="Intelligent digital asset protection for sports media. Fingerprint, monitor, and defend your intellectual property with AI.">
-    
+    <meta name="description"
+        content="Intelligent digital asset protection for sports media. Fingerprint, monitor, and defend your intellectual property with AI.">
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
-    
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;600;800&display=swap"
+        rel="stylesheet">
+
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://accounts.google.com/gsi/client?onload=initGoogleAuth" async defer></script>
-    
+
     <style>
         :root {
             --bg-dark: #0A0A0C;
@@ -68,7 +72,10 @@
             min-height: 100vh;
         }
 
-        h1, h2, h3, .brand {
+        h1,
+        h2,
+        h3,
+        .brand {
             font-family: 'Outfit', sans-serif;
         }
 
@@ -311,7 +318,9 @@
         }
 
         @keyframes spin {
-            to { transform: rotate(360deg); }
+            to {
+                transform: rotate(360deg);
+            }
         }
 
         .spin {
@@ -355,8 +364,17 @@
             font-weight: 600;
         }
 
-        .similarity-high { background: rgba(255, 61, 113, 0.1); color: var(--accent); border: 1px solid rgba(255, 61, 113, 0.2); }
-        .similarity-mid { background: rgba(255, 171, 0, 0.1); color: var(--warning); border: 1px solid rgba(255, 171, 0, 0.2); }
+        .similarity-high {
+            background: rgba(255, 61, 113, 0.1);
+            color: var(--accent);
+            border: 1px solid rgba(255, 61, 113, 0.2);
+        }
+
+        .similarity-mid {
+            background: rgba(255, 171, 0, 0.1);
+            color: var(--warning);
+            border: 1px solid rgba(255, 171, 0, 0.2);
+        }
 
         .status-pulse {
             width: 8px;
@@ -370,9 +388,20 @@
         }
 
         @keyframes pulse {
-            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 230, 118, 0.7); }
-            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(0, 230, 118, 0); }
-            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 230, 118, 0); }
+            0% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(0, 230, 118, 0.7);
+            }
+
+            70% {
+                transform: scale(1);
+                box-shadow: 0 0 0 10px rgba(0, 230, 118, 0);
+            }
+
+            100% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(0, 230, 118, 0);
+            }
         }
 
         /* --- Analysis Overlay --- */
@@ -417,8 +446,13 @@
         }
 
         @keyframes scan {
-            0% { top: 0; }
-            100% { top: 100%; }
+            0% {
+                top: 0;
+            }
+
+            100% {
+                top: 100%;
+            }
         }
 
         .log-stream {
@@ -435,7 +469,9 @@
         }
 
         /* Hidden input */
-        #file-input { display: none; }
+        #file-input {
+            display: none;
+        }
 
         /* --- Auth Overlay --- */
         #auth-overlay {
@@ -460,7 +496,7 @@
             width: 100%;
             max-width: 450px;
             text-align: center;
-            box-shadow: 0 40px 80px -20px rgba(0,0,0,0.5);
+            box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.5);
         }
 
         .auth-card .brand {
@@ -526,7 +562,7 @@
             flex-direction: column;
             gap: 0.25rem;
             margin-bottom: 1rem;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
             z-index: 100;
         }
 
@@ -583,7 +619,7 @@
             max-height: 80vh;
             display: flex;
             flex-direction: column;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
         }
 
         .modal-header {
@@ -689,13 +725,22 @@
         }
 
         @media (max-width: 1024px) {
-            .app-container { grid-template-columns: 80px 1fr; }
-            .nav-item span, .brand span { display: none; }
-            .dashboard-grid { grid-template-columns: 1fr; }
-        }
+            .app-container {
+                grid-template-columns: 80px 1fr;
+            }
 
+            .nav-item span,
+            .brand span {
+                display: none;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
+
 <body class="light-theme">
 
     <!-- Auth Overlay -->
@@ -706,29 +751,38 @@
                 <span>AssetDefender</span>
             </div>
             <h2 id="auth-title" style="margin-bottom: 0.5rem;">Welcome Back</h2>
-            <p id="auth-subtitle" style="color: var(--text-muted); margin-bottom: 2.5rem;">Enter your credentials to access the vault</p>
-            
+            <p id="auth-subtitle" style="color: var(--text-muted); margin-bottom: 2.5rem;">Enter your credentials to
+                access the vault</p>
+
             <!-- SAVED ACCOUNT UI -->
-            <div id="saved-account-section" style="display: none; margin-bottom: 1.5rem; padding: 2rem 1.5rem; background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.15);">
-                <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.25rem; font-weight: 500; text-transform: uppercase; letter-spacing: 1px;">Saved Session</div>
-                
+            <div id="saved-account-section"
+                style="display: none; margin-bottom: 1.5rem; padding: 2rem 1.5rem; background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.15);">
+                <div
+                    style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.25rem; font-weight: 500; text-transform: uppercase; letter-spacing: 1px;">
+                    Saved Session</div>
+
                 <div style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
-                    <div style="width: 56px; height: 56px; border-radius: 50%; background: var(--primary-glow); display: flex; align-items: center; justify-content: center; margin-bottom: 0.5rem; border: 2px solid var(--primary);">
+                    <div
+                        style="width: 56px; height: 56px; border-radius: 50%; background: var(--primary-glow); display: flex; align-items: center; justify-content: center; margin-bottom: 0.5rem; border: 2px solid var(--primary);">
                         <i data-lucide="user-check" size="28" style="color: var(--primary);"></i>
                     </div>
-                    
+
                     <div style="font-weight: 600; font-size: 1.05rem; color: var(--text-main); margin-bottom: 0.5rem;">
                         <span id="saved-email-display">user@example.com</span>
                     </div>
 
-                    <button class="btn-primary" id="btn-continue-saved" style="width: 100%; padding: 0.85rem 1.5rem; font-size: 0.95rem; border-radius: 12px; display: flex; align-items: center; justify-content: center; gap: 0.5rem; margin-top: 0.75rem; box-shadow: 0 4px 15px var(--primary-glow);">
+                    <button class="btn-primary" id="btn-continue-saved"
+                        style="width: 100%; padding: 0.85rem 1.5rem; font-size: 0.95rem; border-radius: 12px; display: flex; align-items: center; justify-content: center; gap: 0.5rem; margin-top: 0.75rem; box-shadow: 0 4px 15px var(--primary-glow);">
                         <span>Continue</span>
                         <i data-lucide="arrow-right" size="18"></i>
                     </button>
                 </div>
-                
+
                 <div style="margin-top: 1.5rem;">
-                    <span id="btn-clear-saved" style="font-size: 0.85rem; color: var(--text-muted); cursor: pointer; transition: color 0.2s;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--text-muted)'">Log in with another account</span>
+                    <span id="btn-clear-saved"
+                        style="font-size: 0.85rem; color: var(--text-muted); cursor: pointer; transition: color 0.2s;"
+                        onmouseover="this.style.color='var(--accent)'"
+                        onmouseout="this.style.color='var(--text-muted)'">Log in with another account</span>
                 </div>
             </div>
 
@@ -737,17 +791,21 @@
                     <label>Email Address</label>
                     <input type="email" id="auth-email" placeholder="name@organization.com">
                 </div>
-                
+
                 <div class="input-group">
                     <label>Password</label>
                     <input type="password" id="auth-pass" placeholder="••••••••">
                 </div>
 
-                <div id="auth-error" style="color: var(--accent); font-size: 0.85rem; margin-bottom: 1rem; background: rgba(255, 61, 113, 0.1); padding: 0.75rem; border-radius: 8px; border: 1px solid rgba(255, 61, 113, 0.2); display: none;"></div>
+                <div id="auth-error"
+                    style="color: var(--accent); font-size: 0.85rem; margin-bottom: 1rem; background: rgba(255, 61, 113, 0.1); padding: 0.75rem; border-radius: 8px; border: 1px solid rgba(255, 61, 113, 0.2); display: none;">
+                </div>
 
-                <button class="btn-primary" id="auth-submit" style="width: 100%; margin-top: 0.5rem;">Login to Dashboard</button>
-                
-                <div style="margin: 1.5rem 0; display: flex; align-items: center; gap: 1rem; color: var(--text-muted); font-size: 0.8rem;">
+                <button class="btn-primary" id="auth-submit" style="width: 100%; margin-top: 0.5rem;">Login to
+                    Dashboard</button>
+
+                <div
+                    style="margin: 1.5rem 0; display: flex; align-items: center; gap: 1rem; color: var(--text-muted); font-size: 0.8rem;">
                     <div style="flex: 1; height: 1px; background: var(--border);"></div>
                     OR
                     <div style="flex: 1; height: 1px; background: var(--border);"></div>
@@ -756,7 +814,7 @@
                 <!-- Google Login Button -->
                 <div id="google-login-btn" style="display: flex; justify-content: center;"></div>
             </div>
-            
+
             <p class="auth-toggle" id="auth-toggle-text">
                 Don't have an account? <span id="toggle-auth">Create one</span>
             </p>
@@ -833,11 +891,14 @@
                     <p>Monitoring 12,482 digital assets across the web</p>
                 </div>
 
-                <div class="theme-switcher" id="theme-toggle" style="display: flex; align-items: center; gap: 0.75rem; background: var(--glass); padding: 0.5rem 1.25rem; border-radius: 50px; border: 1px solid var(--border); cursor: pointer; transition: all 0.3s ease;">
-                    <div id="theme-icon-container" style="display: flex; align-items: center; justify-content: center; color: var(--primary);">
+                <div class="theme-switcher" id="theme-toggle"
+                    style="display: flex; align-items: center; gap: 0.75rem; background: var(--glass); padding: 0.5rem 1.25rem; border-radius: 50px; border: 1px solid var(--border); cursor: pointer; transition: all 0.3s ease;">
+                    <div id="theme-icon-container"
+                        style="display: flex; align-items: center; justify-content: center; color: var(--primary);">
                         <i data-lucide="sun" id="theme-icon" size="18"></i>
                     </div>
-                    <span id="theme-text" style="font-size: 0.875rem; font-weight: 600; color: var(--text-main);">Light Mode</span>
+                    <span id="theme-text" style="font-size: 0.875rem; font-weight: 600; color: var(--text-main);">Light
+                        Mode</span>
                 </div>
             </header>
 
@@ -845,97 +906,116 @@
             <div id="view-dashboard">
                 <!-- Stats -->
                 <div class="dashboard-grid">
-                <div class="stat-card" id="btn-view-fingerprints" style="cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 10px 20px -10px var(--primary-glow)';" onmouseout="this.style.transform='none'; this.style.boxShadow='none';">
-                    <div class="stat-label">
-                        <i data-lucide="fingerprint" size="16"></i> Total Fingerprints (Click to View)
+                    <div class="stat-card" id="btn-view-fingerprints"
+                        style="cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;"
+                        onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 10px 20px -10px var(--primary-glow)';"
+                        onmouseout="this.style.transform='none'; this.style.boxShadow='none';">
+                        <div class="stat-label">
+                            <i data-lucide="fingerprint" size="16"></i> Total Fingerprints (Click to View)
+                        </div>
+                        <div id="stat-fingerprints" class="stat-value">0</div>
                     </div>
-                    <div id="stat-fingerprints" class="stat-value">0</div>
-                </div>
-                <div class="stat-card">
+                    <div class="stat-card">
 
-                    <div class="stat-label">
-                        <i data-lucide="alert-triangle" size="16" style="color: var(--accent);"></i> Active Violations
+                        <div class="stat-label">
+                            <i data-lucide="alert-triangle" size="16" style="color: var(--accent);"></i> Active
+                            Violations
+                        </div>
+                        <div id="stat-violations" class="stat-value">0</div>
                     </div>
-                    <div id="stat-violations" class="stat-value">0</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">
-                        <div class="status-pulse"></div> Network Status
+                    <div class="stat-card">
+                        <div class="stat-label">
+                            <div class="status-pulse"></div> Network Status
+                        </div>
+                        <div class="stat-value">Operational</div>
                     </div>
-                    <div class="stat-value">Operational</div>
                 </div>
-            </div>
 
-            <!-- Mode Switcher -->
-            <div style="background: var(--glass); padding: 0.5rem; border-radius: 12px; display: inline-flex; gap: 0.5rem; margin-bottom: 2rem; border: 1px solid var(--border);">
-                <button id="mode-protect" class="btn-mode active" style="background: var(--primary); color: white; border: none; padding: 0.5rem 1.5rem; border-radius: 8px; font-weight: 600; cursor: pointer;">Protect Mode</button>
-                <button id="mode-scan" class="btn-mode" style="background: transparent; color: var(--text-muted); border: none; padding: 0.5rem 1.5rem; border-radius: 8px; font-weight: 600; cursor: pointer;">Scan & Detect</button>
-            </div>
-
-            <!-- Upload Zone -->
-            <div class="section-title">
-                <h3>Asset Registration</h3>
-            </div>
-            
-            <div id="upload-zone" class="upload-section" onclick="document.getElementById('file-input').click()">
-                <div class="upload-icon">
-                    <i id="upload-icon-inner" data-lucide="upload-cloud" size="32"></i>
+                <!-- Mode Switcher -->
+                <div
+                    style="background: var(--glass); padding: 0.5rem; border-radius: 12px; display: inline-flex; gap: 0.5rem; margin-bottom: 2rem; border: 1px solid var(--border);">
+                    <button id="mode-protect" class="btn-mode active"
+                        style="background: var(--primary); color: white; border: none; padding: 0.5rem 1.5rem; border-radius: 8px; font-weight: 600; cursor: pointer;">Protect
+                        Mode</button>
+                    <button id="mode-scan" class="btn-mode"
+                        style="background: transparent; color: var(--text-muted); border: none; padding: 0.5rem 1.5rem; border-radius: 8px; font-weight: 600; cursor: pointer;">Scan
+                        & Detect</button>
                 </div>
-                <h3 id="upload-title">Protect New Media</h3>
-                <p id="upload-desc">Drag and drop images or videos to generate neural fingerprints and start monitoring.</p>
-                <button class="btn-primary" id="upload-btn">Select Files</button>
-                <input type="file" id="file-input" accept="image/*,video/*">
-            </div>
 
-            <!-- Results -->
-            <div class="section-title">
-                <h3 id="results-title">Recent Detections</h3>
-                <span style="color: var(--primary); font-size: 0.875rem; cursor: pointer; font-weight: 500;">View All</span>
-            </div>
+                <!-- Upload Zone -->
+                <div class="section-title">
+                    <h3>Asset Registration</h3>
+                </div>
 
-            <table class="matches-table">
-                <thead id="results-head">
-                    <tr>
-                        <th>Asset Name</th>
-                        <th>Platform</th>
-                        <th>Similarity</th>
-                        <th>Status / Date</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody id="matches-body">
-                    <tr class="match-row">
-                        <td>
-                            <div class="asset-info">
-                                <img src="https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?auto=format&fit=crop&q=80&w=100" alt="" class="asset-preview">
-                                <div>
-                                    <div style="font-weight: 600;">Final_Trophy_Lift.mp4</div>
-                                    <div style="font-size: 0.75rem; color: var(--text-muted);">Original Hash: f7a2...b91c</div>
+                <div id="upload-zone" class="upload-section" onclick="document.getElementById('file-input').click()">
+                    <div class="upload-icon">
+                        <i id="upload-icon-inner" data-lucide="upload-cloud" size="32"></i>
+                    </div>
+                    <h3 id="upload-title">Protect New Media</h3>
+                    <p id="upload-desc">Drag and drop images or videos to generate neural fingerprints and start
+                        monitoring.</p>
+                    <button class="btn-primary" id="upload-btn">Select Files</button>
+                    <input type="file" id="file-input" accept="image/*,video/*">
+                </div>
+
+                <!-- Results -->
+                <div class="section-title">
+                    <h3 id="results-title">Recent Detections</h3>
+                    <span style="color: var(--primary); font-size: 0.875rem; cursor: pointer; font-weight: 500;">View
+                        All</span>
+                </div>
+
+                <table class="matches-table">
+                    <thead id="results-head">
+                        <tr>
+                            <th>Asset Name</th>
+                            <th>Platform</th>
+                            <th>Similarity</th>
+                            <th>Status / Date</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="matches-body">
+                        <tr class="match-row">
+                            <td>
+                                <div class="asset-info">
+                                    <img src="https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?auto=format&fit=crop&q=80&w=100"
+                                        alt="" class="asset-preview">
+                                    <div>
+                                        <div style="font-weight: 600;">Final_Trophy_Lift.mp4</div>
+                                        <div style="font-size: 0.75rem; color: var(--text-muted);">Original Hash:
+                                            f7a2...b91c</div>
+                                    </div>
                                 </div>
-                            </div>
-                        </td>
-                        <td>Twitter / X</td>
-                        <td><span class="similarity-badge similarity-high">98.4% Match</span></td>
-                        <td>2m ago</td>
-                        <td><button style="background: transparent; border: 1px solid var(--border); color: var(--text-main); padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer;" onclick="handleTakedown(this)">Takedown</button></td>
-                    </tr>
-                    <tr class="match-row">
-                        <td>
-                            <div class="asset-info">
-                                <img src="https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&q=80&w=100" alt="" class="asset-preview">
-                                <div>
-                                    <div style="font-weight: 600;">UCL_Match_Highlights_01.jpg</div>
-                                    <div style="font-size: 0.75rem; color: var(--text-muted);">Original Hash: a8b2...c4e5</div>
+                            </td>
+                            <td>Twitter / X</td>
+                            <td><span class="similarity-badge similarity-high">98.4% Match</span></td>
+                            <td>2m ago</td>
+                            <td><button
+                                    style="background: transparent; border: 1px solid var(--border); color: var(--text-main); padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer;"
+                                    onclick="handleTakedown(this)">Takedown</button></td>
+                        </tr>
+                        <tr class="match-row">
+                            <td>
+                                <div class="asset-info">
+                                    <img src="https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&q=80&w=100"
+                                        alt="" class="asset-preview">
+                                    <div>
+                                        <div style="font-weight: 600;">UCL_Match_Highlights_01.jpg</div>
+                                        <div style="font-size: 0.75rem; color: var(--text-muted);">Original Hash:
+                                            a8b2...c4e5</div>
+                                    </div>
                                 </div>
-                            </div>
-                        </td>
-                        <td>Instagram</td>
-                        <td><span class="similarity-badge similarity-mid">82.1% (Cropped)</span></td>
-                        <td>14m ago</td>
-                        <td><button style="background: transparent; border: 1px solid var(--border); color: var(--text-main); padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer;">Review</button></td>
-                    </tr>
-                </tbody>
-            </table>
+                            </td>
+                            <td>Instagram</td>
+                            <td><span class="similarity-badge similarity-mid">82.1% (Cropped)</span></td>
+                            <td>14m ago</td>
+                            <td><button
+                                    style="background: transparent; border: 1px solid var(--border); color: var(--text-main); padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer;">Review</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div> <!-- End Dashboard View -->
 
             <!-- Library View -->
@@ -953,7 +1033,8 @@
             <div id="view-alerts" style="display: none;">
                 <div class="section-title">
                     <h3>Misuse Alerts & Notifications</h3>
-                    <p style="color: var(--text-muted); font-size: 0.875rem;">Manage active violations and notify stakeholders.</p>
+                    <p style="color: var(--text-muted); font-size: 0.875rem;">Manage active violations and notify
+                        stakeholders.</p>
                 </div>
                 <div id="alerts-list" style="display: flex; flex-direction: column; gap: 1rem;">
                     <!-- Alerts will be loaded here -->
@@ -974,15 +1055,6 @@
             <div class="log-stream" id="log-stream">
                 <!-- Logs will appear here dynamically -->
             </div>
-        </div>
-    </div>
-
-    <!-- Image Preview Modal -->
-    <div id="preview-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; align-items: center; justify-content: center; backdrop-filter: blur(5px);">
-        <div style="background: var(--bg-card); padding: 2rem; border-radius: 16px; border: 1px solid var(--border); max-width: 600px; width: 90%; text-align: center; position: relative;">
-            <button id="btn-close-preview" style="position: absolute; top: 1rem; right: 1rem; background: transparent; border: none; color: var(--text-muted); cursor: pointer;"><i data-lucide="x"></i></button>
-            <h3 id="preview-title" style="margin-bottom: 1rem; color: var(--text-main);">Protected Asset</h3>
-            <img id="preview-image" src="" style="max-width: 100%; max-height: 60vh; border-radius: 8px; object-fit: contain;">
         </div>
     </div>
 
@@ -1026,7 +1098,7 @@
                         savedAccountSection.style.display = 'block';
                         authFormFields.style.display = 'none';
                     }
-                } catch(e) {}
+                } catch (e) { }
             } else {
                 savedAccountSection.style.display = 'none';
                 authFormFields.style.display = 'block';
@@ -1041,7 +1113,7 @@
                     authEmailInput.value = parsed.email;
                     authPassInput.value = parsed.password;
                     authSubmit.click();
-                } catch(e) {}
+                } catch (e) { }
             }
         });
 
@@ -1059,7 +1131,7 @@
         window.initGoogleAuth = function () {
             if (typeof google !== 'undefined') {
                 google.accounts.id.initialize({
-                    client_id: "20826960770-stlsmari0slk2crg5vvro06egdu6kv6h.apps.googleusercontent.com", 
+                    client_id: "20826960770-stlsmari0slk2crg5vvro06egdu6kv6h.apps.googleusercontent.com",
                     callback: handleCredentialResponse
                 });
                 google.accounts.id.renderButton(
@@ -1073,7 +1145,7 @@
 
         async function handleCredentialResponse(response) {
             console.log("Verifying Google account...");
-            
+
             try {
                 const res = await fetch(API_BASE + '/auth/google', {
                     method: 'POST',
@@ -1138,7 +1210,7 @@
             checkSavedSession();
             document.getElementById('toggle-auth').onclick = handleToggle;
         }
-        
+
         if (toggleAuth) toggleAuth.onclick = handleToggle;
 
         authSubmit.addEventListener('click', async () => {
@@ -1230,7 +1302,7 @@
             currentMode = mode;
             const protectBtn = document.getElementById('mode-protect');
             const scanBtn = document.getElementById('mode-scan');
-            
+
             if (mode === 'protect') {
                 protectBtn.style.background = 'var(--primary)';
                 protectBtn.style.color = 'white';
@@ -1278,14 +1350,14 @@
             try {
                 const endpoint = currentMode === 'protect' ? '/register' : '/check';
                 addLog(`[NETWORK] Sending data to ${endpoint}...`);
-                
+
                 const response = await fetch(API_BASE + endpoint, {
                     method: 'POST',
                     body: formData
                 });
 
                 const result = await response.json();
-                
+
                 if (result.success) {
                     await finalizeAnalysis(file.name, result);
                 } else {
@@ -1307,7 +1379,7 @@
 
         async function finalizeAnalysis(filename, result) {
             addLog(`[AI] Fingerprint Generated: <span style="color: var(--text-main)">${result.fingerprint.substring(0, 16)}...</span>`);
-            
+
             if (currentMode === 'protect') {
                 addLog(`[SUCCESS] Asset successfully registered in the vault.`);
                 statusText.innerText = "Asset Protected!";
@@ -1315,7 +1387,7 @@
             } else {
                 const matchCount = result.matches.length;
                 addLog(`[SCAN] Comparison complete. ${matchCount} matches found.`);
-                
+
                 if (matchCount > 0) {
                     statusText.innerText = "VIOLATION DETECTED!";
                     addLog(`[ALERT] <span style="color: var(--accent)">Automated email alert sent to security team.</span>`);
@@ -1337,7 +1409,7 @@
             try {
                 const res = await fetch(`${API_BASE}/dashboard?userEmail=${encodeURIComponent(currentUser)}`);
                 const data = await res.json();
-                
+
                 // Update stats
                 document.getElementById('stat-fingerprints').innerText = data.assets.length;
                 document.getElementById('stat-violations').innerText = data.detections.length;
@@ -1345,7 +1417,7 @@
                 // Update Table
                 matchesBody.innerHTML = '';
                 const resultsTitle = document.getElementById('results-title');
-                
+
                 if (currentMode === 'scan') {
                     resultsTitle.innerText = "Recent Detections";
                     // Show Detections (1 row per file, best match)
@@ -1399,7 +1471,7 @@
                             <td>Original Vault</td>
                             <td><span class="similarity-badge" style="background: rgba(0,212,255,0.1); color: var(--primary);">Protected</span></td>
                             <td>${new Date(asset.timestamp).toLocaleString()}</td>
-                            <td><button style="background: transparent; border: 1px solid var(--border); color: var(--text-main); padding: 0.4rem 0.8rem; border-radius: 8px; cursor: pointer; font-size: 0.8rem;" onclick="previewAsset('${asset.filename}', '${asset.name}')">View Image</button></td>
+                            <td><button style="background: transparent; border: 1px solid var(--border); color: var(--success); padding: 0.4rem 0.8rem; border-radius: 8px; cursor: pointer; font-size: 0.8rem; display: flex; align-items: center; gap: 0.5rem;" onclick="this.innerHTML='<i data-lucide=\'check-circle\' size=\'14\'></i> Saved'; setTimeout(()=>lucide.createIcons(), 10);"><i data-lucide="check" size="14"></i> Done</button></td>
                         `;
                         matchesBody.appendChild(row);
                     });
@@ -1408,19 +1480,20 @@
                         matchesBody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: var(--text-muted); padding: 3rem;">No assets protected yet. Start by uploading above!</td></tr>';
                     }
                 }
-                
+
+
                 lucide.createIcons();
             } catch (e) {
                 console.error("Dashboard refresh failed", e);
             }
         }
 
-        window.handleTakedown = async function(btn, detectionId) {
+        window.handleTakedown = async function (btn, detectionId) {
             const row = btn.closest('tr');
             btn.innerHTML = '<i data-lucide="loader" class="spin" style="width:16px;height:16px;"></i> Removing...';
             lucide.createIcons();
             btn.disabled = true;
-            
+
             try {
                 // Actually remove it from the backend
                 if (currentUser && detectionId) {
@@ -1461,11 +1534,11 @@
         btnViewFingerprints.addEventListener('click', async () => {
             fingerprintsModal.style.display = 'flex';
             fingerprintsList.innerHTML = '<div style="text-align: center; color: var(--text-muted); padding: 2rem;">Loading fingerprints...</div>';
-            
+
             try {
                 const res = await fetch(`${API_BASE}/dashboard?userEmail=${encodeURIComponent(currentUser)}`);
                 const data = await res.json();
-                
+
                 if (data.assets && data.assets.length > 0) {
                     fingerprintsList.innerHTML = '';
                     data.assets.reverse().forEach(asset => {
@@ -1503,34 +1576,15 @@
             }
         });
 
-        // --- Image Preview Modal Logic ---
-        window.previewAsset = function(filename, name) {
-            const modal = document.getElementById('preview-modal');
-            document.getElementById('preview-title').innerText = name;
-            // The image is served from the /uploads/ directory by express
-            document.getElementById('preview-image').src = '/uploads/' + filename;
-            modal.style.display = 'flex';
-        };
-
-        document.getElementById('btn-close-preview').addEventListener('click', () => {
-            document.getElementById('preview-modal').style.display = 'none';
-        });
-
-        document.getElementById('preview-modal').addEventListener('click', (e) => {
-            if (e.target === document.getElementById('preview-modal')) {
-                document.getElementById('preview-modal').style.display = 'none';
-            }
-        });
-
         // --- Navigation Logic ---
         const navOverview = document.getElementById('nav-overview');
         const navLibrary = document.getElementById('nav-library');
         const navAlerts = document.getElementById('nav-alerts');
-        
+
         const viewDashboard = document.getElementById('view-dashboard');
         const viewLibrary = document.getElementById('view-library');
         const viewAlerts = document.getElementById('view-alerts');
-        
+
         const libraryGrid = document.getElementById('library-grid');
         const alertsList = document.getElementById('alerts-list');
 
@@ -1549,11 +1603,11 @@
             hideAllViews();
             viewLibrary.style.display = 'block';
             libraryGrid.innerHTML = '<div style="color: var(--text-muted); grid-column: 1 / -1; text-align: center; padding: 2rem;">Loading library...</div>';
-            
+
             try {
                 const res = await fetch(`${API_BASE}/dashboard?userEmail=${encodeURIComponent(currentUser)}`);
                 const data = await res.json();
-                
+
                 if (data.assets && data.assets.length > 0) {
                     libraryGrid.innerHTML = '';
                     data.assets.reverse().forEach(asset => {
@@ -1561,7 +1615,7 @@
                         card.className = 'library-card';
                         // Show the actual image uploaded if available, fallback to placeholder
                         const imgSrc = asset.filename ? `/uploads/${asset.filename}` : 'https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?auto=format&fit=crop&q=80&w=400';
-                        
+
                         card.innerHTML = `
                             <img src="${imgSrc}" class="library-image" alt="Protected Asset" onerror="this.src='https://via.placeholder.com/400x300?text=No+Preview'">
                             <div class="library-info">
@@ -1588,11 +1642,11 @@
             hideAllViews();
             viewAlerts.style.display = 'block';
             alertsList.innerHTML = '<div style="color: var(--text-muted); text-align: center; padding: 2rem;">Loading alerts...</div>';
-            
+
             try {
                 const res = await fetch(`${API_BASE}/dashboard?userEmail=${encodeURIComponent(currentUser)}`);
                 const data = await res.json();
-                
+
                 if (data.detections && data.detections.length > 0) {
                     alertsList.innerHTML = '';
                     data.detections.reverse().forEach(det => {
@@ -1638,12 +1692,12 @@
             }
         });
 
-        window.sendAlertEmail = async function(btn, to, subject, body) {
+        window.sendAlertEmail = async function (btn, to, subject, body) {
             const statusDiv = btn.nextElementSibling;
             btn.disabled = true;
             btn.innerHTML = '<i data-lucide="loader" size="16" class="spin"></i> Sending...';
             lucide.createIcons();
-            
+
             try {
                 const response = await fetch(API_BASE + '/send-alert', {
                     method: 'POST',
@@ -1651,7 +1705,7 @@
                     body: JSON.stringify({ to, subject, body })
                 });
                 const result = await response.json();
-                
+
                 if (result.success) {
                     btn.innerHTML = '<i data-lucide="check" size="16"></i> Sent';
                     btn.style.background = 'var(--success)';
@@ -1679,10 +1733,10 @@
         const themeToggle = document.getElementById('theme-toggle');
         const themeIcon = document.getElementById('theme-icon');
         const themeText = document.getElementById('theme-text');
-        
+
         themeToggle.addEventListener('click', () => {
             const isLight = document.body.classList.toggle('light-theme');
-            
+
             if (isLight) {
                 themeIcon.setAttribute('data-lucide', 'sun');
                 themeText.innerText = 'Light Mode';
@@ -1694,4 +1748,5 @@
         });
     </script>
 </body>
+
 </html>
