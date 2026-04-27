@@ -924,6 +924,21 @@
         </div>
     </div>
 
+    <!-- Image View Modal -->
+    <div id="image-view-modal" class="modal-overlay">
+        <div class="modal-card" style="max-width: 600px; width: 90%;">
+            <div class="modal-header">
+                <div class="modal-title">Protected Media View</div>
+                <button class="modal-close" id="btn-close-image-modal">
+                    <i data-lucide="x" size="24"></i>
+                </button>
+            </div>
+            <div class="modal-body" style="display: flex; justify-content: center; align-items: center; padding: 1rem;">
+                <img id="image-view-element" src="" alt="Protected Asset" style="max-width: 100%; max-height: 60vh; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.2);">
+            </div>
+        </div>
+    </div>
+
     <div class="app-container">
 
         <!-- Sidebar -->
@@ -1589,7 +1604,7 @@
                             <td>Original Vault</td>
                             <td><span class="similarity-badge" style="background: rgba(0,212,255,0.1); color: var(--primary);">Protected</span></td>
                             <td>${new Date(asset.timestamp).toLocaleString()}</td>
-                            <td><button style="background: transparent; border: 1px solid var(--border); color: var(--success); padding: 0.4rem 0.8rem; border-radius: 8px; cursor: pointer; font-size: 0.8rem; display: flex; align-items: center; gap: 0.5rem;" onclick="this.innerHTML='<i data-lucide=\'check-circle\' size=\'14\'></i> Saved'; setTimeout(()=>lucide.createIcons(), 10);"><i data-lucide="check" size="14"></i> Done</button></td>
+                            <td><button style="background: transparent; border: 1px solid var(--border); color: var(--primary); padding: 0.4rem 0.8rem; border-radius: 8px; cursor: pointer; font-size: 0.8rem; display: flex; align-items: center; gap: 0.5rem;" onclick="openImageModal('/uploads/${asset.filename}')"><i data-lucide="eye" size="14"></i> View</button></td>
                         `;
                         matchesBody.appendChild(row);
                     });
@@ -1863,6 +1878,31 @@
                 themeText.innerText = 'Dark Mode';
             }
             lucide.createIcons();
+        });
+        });
+
+        // --- Image View Modal Logic ---
+        const imageModal = document.getElementById('image-view-modal');
+        const imageElement = document.getElementById('image-view-element');
+        const closeImageModalBtn = document.getElementById('btn-close-image-modal');
+
+        window.openImageModal = function(imagePath) {
+            imageElement.src = imagePath;
+            imageModal.style.display = 'flex';
+        };
+
+        if (closeImageModalBtn) {
+            closeImageModalBtn.addEventListener('click', () => {
+                imageModal.style.display = 'none';
+                imageElement.src = '';
+            });
+        }
+
+        imageModal.addEventListener('click', (e) => {
+            if (e.target === imageModal) {
+                imageModal.style.display = 'none';
+                imageElement.src = '';
+            }
         });
     </script>
 </body>
