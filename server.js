@@ -28,7 +28,15 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-app.use(express.static(path.join(__dirname))); // Serve root files like audio
+app.use(express.static(path.join(__dirname)));
+
+// Ensure required directories exist
+const dirs = ['uploads', 'data'];
+dirs.forEach(dir => {
+    const p = path.join(__dirname, dir);
+    if (!fs.existsSync(p)) fs.mkdirSync(p);
+});
+// Serve root files like audio
 
 // Configure Multer for file uploads
 const storage = multer.diskStorage({
