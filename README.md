@@ -13,6 +13,7 @@ AssetDefender is a professional-grade MVP designed to protect digital creators' 
 ## 🛠️ Tech Stack
 - **Frontend:** Vanilla HTML5, CSS3, JavaScript (ES6+), Lucide Icons.
 - **Backend:** Node.js, Express.
+- AI Engine: Google Gemini 3.1 Flash API
 - **Image Processing:** Sharp, Imghash.
 - **Database:** Local JSON-based isolated storage.
 - **Communication:** Resend API (Email Alerts).
