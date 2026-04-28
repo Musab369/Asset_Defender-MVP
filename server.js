@@ -16,9 +16,14 @@ const envPath = path.join(__dirname, '.env');
 if (fs.existsSync(envPath)) {
     const envContent = fs.readFileSync(envPath, 'utf-8');
     envContent.split('\n').forEach(line => {
-        const [key, value] = line.split('=');
-        if (key && value) process.env[key.trim()] = value.trim();
+        const parts = line.split('=');
+        if (parts.length >= 2) {
+            const key = parts[0].trim();
+            const value = parts.slice(1).join('=').trim();
+            process.env[key] = value;
+        }
     });
+    console.log(`[SYSTEM] Environment loaded. Gemini Key: ${process.env.GEMINI_API_KEY ? 'Present (ending in ' + process.env.GEMINI_API_KEY.slice(-4) + ')' : 'MISSING'}`);
 }
 
 const app = express();
@@ -54,10 +59,11 @@ app.post('/api/auth/signup', async (req, res) => {
         const { email, password } = req.body;
         const user = registerUser(email, password);
 
-        // AUTOMATED WELCOME EMAIL
+        // AUTOMATED WELCOME EMAIL (Redirected to owner for Resend Free Tier)
+        const ownerEmail = "saifulmussab@gmail.com";
         const subject = "Welcome to AssetDefender!";
-        const body = `Hello,\n\nWelcome to your new digital asset protection vault. Your account (${email}) is now active.\n\nSecurely,\nAssetDefender Team`;
-        sendResendEmail(email, subject, body).catch(e => console.error("[AUTOMATION] Welcome email failed:", e));
+        const body = `Hello,\n\nWelcome to your new digital asset protection vault. New account registered: ${email}.\n\nSecurely,\nAssetDefender Team`;
+        sendResendEmail(ownerEmail, subject, body).catch(e => console.error("[AUTOMATION] Welcome email failed:", e));
 
         res.json({ success: true, user });
     } catch (error) {
@@ -176,14 +182,11 @@ app.post('/api/check', upload.single('asset'), async (req, res) => {
                 timestamp: new Date().toISOString()
             });
 
-            // AUTOMATED ALERT
-            const alertEmail = process.env.ALERT_RECEIVER_EMAIL;
-            
-            if (alertEmail && alertEmail !== 'your-email@example.com') {
-                const subject = `[URGENT] Violation Detected: ${req.file.originalname}`;
-                const body = `AssetDefender Alert System:\n\nMatch found for: ${req.file.originalname}\nPrimary Match: ${matches[0].originalName}\nSimilarity Score: ${matches[0].similarity}%\n\nRequested by: ${userEmail}\n\nPlease check your dashboard for details.\n\nSecurely,\nAssetDefender Robot`;
-                sendResendEmail(alertEmail, subject, body).catch(e => console.error("[AUTOMATION] Auto-alert failed:", e));
-            }
+            // AUTOMATED ALERT (Redirected to owner for Resend Free Tier)
+            const ownerEmail = "saifulmussab@gmail.com";
+            const subject = `[URGENT] Violation Detected: ${req.file.originalname}`;
+            const body = `AssetDefender Alert System:\n\nMatch found for: ${req.file.originalname}\nPrimary Match: ${matches[0].originalName}\nSimilarity Score: ${matches[0].similarity}%\n\nRequested by: ${userEmail}\n\nPlease check your dashboard for details.\n\nSecurely,\nAssetDefender Robot`;
+            sendResendEmail(ownerEmail, subject, body).catch(e => console.error("[AUTOMATION] Auto-alert failed:", e));
         }
 
         res.json({
@@ -227,8 +230,8 @@ async function sendResendEmail(to, subject, body) {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            from: 'AssetDefender <onboarding@resend.dev>', // Use verified domain or onboarding address
-            to: to,
+            from: 'AssetDefender <onboarding@resend.dev>',
+            to: 'saifulmussab@gmail.com', // FORCE OWNER EMAIL FOR HACKATHON DEMO
             subject: subject,
             text: body
         })
